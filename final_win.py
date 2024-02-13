@@ -5,8 +5,10 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLa
 from instr import *  #загружаем переменные из файла instr.py
 
 class FinalWin(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,exp):
+        super().__init__(self,exp)
+        #получаем данные об эксперименте
+        self.exp = exp
         self.set_appear() # устанавливает, как будет выглядеть окно
         self.initUI() # создаём и настраиваем графические элементы
         self.show()  # показываем окно
