@@ -5,6 +5,13 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout,QPus
 from instr import *  #загружаем переменные из файла instr.py
 from final_win import *
 
+class Experiment():  #класс для хранения данных для расчета ввведенных пользователем
+   def __init__(self, age, test1, test2, test3):
+       self.age = age
+       self.test1 = test1
+       self.test2 = test2
+       self.test3 = test3
+
 class TestWin(QWidget):
     def __init__(self):
         super().__init__()
@@ -58,6 +65,7 @@ class TestWin(QWidget):
         self.setLayout(self.h_line)
     def next_click(self):
         self.hide()
+        self.exp = Experiment(self.line_age.text(),self.line_test1.text(), self.line_test2.text(),self.line_test3.text())
         self.fw = FinalWin()
         
     def timer_test1(self): #функция-обработчик для кнопки для 1-го теста
