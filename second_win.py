@@ -22,7 +22,6 @@ class TestWin(QWidget):
         self.btn_test2 = QPushButton(txt_starttest2, self)
         self.btn_test3 = QPushButton(txt_starttest3, self)
 
-
         self.text_name = QLabel(txt_name)
         self.text_age = QLabel(txt_age)
         self.text_test1 = QLabel(txt_test1)
@@ -31,13 +30,9 @@ class TestWin(QWidget):
         self.text_timer = QLabel(txt_timer)
 
         self.line_name = QLineEdit(txt_hintname)
-
         self.line_age = QLineEdit(txt_hintage)
-
         self.line_test1 = QLineEdit(txt_hinttest1)
-
         self.line_test2 = QLineEdit(txt_hinttest2)
-
         self.line_test3 = QLineEdit(txt_hinttest3)
 
         self.l_line = QVBoxLayout()
@@ -64,6 +59,7 @@ class TestWin(QWidget):
     def next_click(self):
         self.hide()
         self.fw = FinalWin()
+        
     def timer_test1(self): #функция-обработчик для кнопки для 1-го теста
         global time # обьявляем глобальную переменную в которой будет хранить обект время1
         time = QTime(0, 0, 15) # создаем объект для хранения времени1
@@ -79,9 +75,25 @@ class TestWin(QWidget):
         if time.toString("hh:mm:ss") == "00:00:00":  # если время1 достигает 0
             self.timer.stop() # останавливаем работу таймера
 
+    def timer_sits(self):
+        global time # обьявляем глобальную переменную в которой будет хранить обект время2
+        time = QTime(0, 0, 30)
+        self.timer = QTimer() # создаем таймер2
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)  #запускаем работу таймера2 через 1500 мс
+    def timer2Event(self):
+        global time
+        time = time.addSecs(-1) #уменьшаем хранимое время2 на 1
+        self.text_timer.setText(time.toString("hh:mm:ss")[6:8])  # на виджете Qlabel text_timer меняем текст - отображаем время2 в нужном виде
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold)) # на виджете Qlabel text_timer меняем меняем шрифт на нужный нам
+        self.text_timer.setStyleSheet("color: rgb(0,0,0)") # на виджете Qlabel text_timer меняем меняем цвет на нужный нам
+        if time.toString("hh:mm:ss") == "00:00:00":  # если время2 достигает 0
+            self.timer.stop() # останавливаем работу таймера
+        
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
         self.btn_test1.clicked.connect(self.timer_test1)  #привязываем к кнопке btn_test1 функцию timer_test1()
+        self.btn_test2.clicked.connect(self.timer_sits)  #привязываем к кнопке btn_test2 функцию timer_sits()
 
 app = QApplication([])
 tw = TestWin()
