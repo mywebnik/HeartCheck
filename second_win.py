@@ -64,8 +64,24 @@ class TestWin(QWidget):
     def next_click(self):
         self.hide()
         self.fw = FinalWin()
+    def timer_test1(self): #функция-обработчик для кнопки для 1-го теста
+        global time # обьявляем глобальную переменную в которой будет хранить обект время1
+        time = QTime(0, 0, 15) # создаем объект для хранения времени1
+        self.timer = QTimer() # создаем таймер1
+        self.timer.timeout.connect(self.timer1Event)  #привязываем к таймеру1 функцию- обработчик timer1Event()
+        self.timer.start(1000)  #запускаем работу таймера
+    def timer1Event(self): #функция обработчик меняющая таймер1
+        global time
+        time = time.addSecs(-1) #уменьшаем хранимое время1 на 1 секунду 
+        self.text_timer.setText(time.toString("hh:mm:ss"))  # на виджете Qlabel text_timer меняем текст - отображаем время1 в нужном виде
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold)) # на виджете Qlabel text_timer меняем меняем шрифт на нужный нам
+        self.text_timer.setStyleSheet("color: rgb(0,0,0)") # на виджете Qlabel text_timer меняем меняем цвет на нужный нам
+        if time.toString("hh:mm:ss") == "00:00:00":  # если время1 достигает 0
+            self.timer.stop() # останавливаем работу таймера
+
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
+        self.btn_test1.clicked.connect(self.timer_test1)  #привязываем к кнопке btn_test1 функцию timer_test1()
 
 app = QApplication([])
 tw = TestWin()
