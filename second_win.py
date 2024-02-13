@@ -95,6 +95,32 @@ class TestWin(QWidget):
         self.btn_test1.clicked.connect(self.timer_test1)  #привязываем к кнопке btn_test1 функцию timer_test1()
         self.btn_test2.clicked.connect(self.timer_sits)  #привязываем к кнопке btn_test2 функцию timer_sits()
 
+    def timer_final(self): #функция-обработчик для кнопки для 3-го теста
+        global time # обьявляем глобальную переменную в которой будет хранить обект время3
+        time = QTime(0, 1, 0) # создаем объект для хранения времени3
+        self.timer = QTimer() # создаем таймер3
+        self.timer.timeout.connect(self.timer3Event)  #привязываем к таймеру3 функцию- обработчик timer3Event()
+        self.timer.start(1000)  #запускаем работу таймера3 через 1000 мс
+    def timer3Event(self): #функция обработчик меняющая таймер3
+        global time
+        time = time.addSecs(-1) #уменьшаем хранимое время3 на 1 
+        self.text_timer.setText(time.toString("hh:mm:ss"))  # на виджете Qlabel text_timer меняем текст - отображаем время3 в нужном виде
+        if int(time.toString("hh:mm:ss")[6:8]) >= 45:
+            self.text_timer.setStyleSheet("color: rgb(0,255,0)")
+        elif int(time.toString("hh:mm:ss")[6:8]) <= 15:
+            self.text_timer.setStyleSheet("color: rgb(0,255,0)")
+        else:
+            self.text_timer.setStyleSheet("color: rgb(0,0,0)")
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold)) # на виджете Qlabel text_timer меняем меняем шрифт на нужный нам
+        if time.toString("hh:mm:ss") == "00:00:00":  # если время3 достигает 0
+            self.timer.stop() # останавливаем работу таймера
+
+    def connects(self):
+        self.btn_next.clicked.connect(self.next_click)
+        self.btn_test1.clicked.connect(self.timer_test1)  #привязываем к кнопке btn_test1 функцию timer_test1()
+        self.btn_test2.clicked.connect(self.timer_sits)  #привязываем к кнопке btn_test2 функцию timer_sits()
+        self.btn_test3.clicked.connect(self.timer_final)  #привязываем к кнопке btn_test3 функцию timer_final()
+
 app = QApplication([])
 tw = TestWin()
 app.exec()
